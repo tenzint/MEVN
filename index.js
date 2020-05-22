@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
  
-const messages = require('.db/messages');
+const messages = require('./db/messages');
 
 const app = express();
  
@@ -18,8 +18,25 @@ app.get('/', (req, res) => {
 });
  
 app.get('/messages', (req, res) => {
+    
+    console.log("-------------get messages")
     messages.getAll().then((messages) => {
         res.json(messages);
+        console.log("-------------get messages")
+    });
+});
+
+app.post('/messages', (req, res) => {
+    console.log("--------post messages")
+    console.log(req.body);
+    messages.create(req.body).then((message) => {
+        res.json(message);
+        console.log("-------msg posted")
+    }).catch((error
+        ) => {
+        console.log("------------error caught")
+        res.status(500);
+        res.json(error);
     });
 });
 
